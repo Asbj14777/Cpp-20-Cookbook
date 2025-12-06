@@ -19,6 +19,7 @@
 #include <variant>
 #include <tuple>
 #include <cstdio>
+// #include <windows.h> // avoid including platform-specific headers in cross-platform code + it increases compile time as it is a large header rather use platform abstraction libraries if needed
 // lib header files included above   
 #include "Animal.hpp"
 #include "Dog.hpp"
