@@ -19,6 +19,7 @@
 #include <variant>
 #include <tuple>
 #include <cstdio>
+//#include<print> if using C++26 module for print support
 // #include <windows.h> // avoid including platform-specific headers in cross-platform code + it increases compile time as it is a large header rather use platform abstraction libraries if needed
 // lib header files included above   
 #include "Animal.hpp"
@@ -66,13 +67,13 @@ class World {
 public:
     explicit World(std::string greeting) : greeting_(std::move(greeting)) {}
 
-    void say_hello() const noexcept { std::printf("%s\n", greeting_.c_str()); }
+	void say_hello() const noexcept { std::printf("%s\n", greeting_.c_str()); } // noexcept indicates this function does not throw exceptions which can help with optimizations and clarity
 
 private:
-    std::string greeting_{};
+	std::string greeting_{}; // private member variable with default initialization which is best practice
 };
 
-enum class Weekday { Mon, Tue, Wed, Thu, Fri, Sat, Sun };
+enum class Weekday { Mon, Tue, Wed, Thu, Fri, Sat, Sun }; // scoped enum preferred over unscoped enum to avoid name collisions
 
 #pragma endregion // Types
 
@@ -100,7 +101,7 @@ inline void printThreadSafe(int n) {
     std::cout << "Thread " << n << '\n';
 }
 
-void printVariant(const std::variant<int, std::string>& var) {
+void printVariant(const std::variant<int, std::string>& var) { // variant example   
     if (std::holds_alternative<int>(var)) {
         std::printf("\nVariant<int>: %d\n", std::get<int>(var));
     }
@@ -109,7 +110,7 @@ void printVariant(const std::variant<int, std::string>& var) {
     }
 }
 
-struct MyError : std::runtime_error {
+struct MyError : std::runtime_error { // custom error type inheriting from std::runtime_error
     using std::runtime_error::runtime_error;
 };
 
@@ -119,16 +120,16 @@ constexpr int factorial(int n) {
     return n <= 1 ? 1 : n * factorial(n - 1);
 }
 
-template<typename T>
-concept Integral = std::is_integral_v<T>;
+template<typename T> // C++20 concept example
+concept Integral = std::is_integral_v<T>; // concept to constrain to integral types which are built-in integer types
 
 template<Integral T>
 T add(T a, T b) { return a + b; }
 
 class Event {
-    vector<function<void()>> listeners;
+    std::vector<std::function<void()>> listeners;
 public:
-    void subscribe(function<void()> listener) {
+    void subscribe(std::function<void()> listener) {
         listeners.push_back(listener);
     }
     void notify() {
@@ -139,7 +140,7 @@ public:
 class App {
 public:
     void onEvent() {
-        cout << "Event received!" << endl;
+		std::printf("Event received in App instance.\n");
     }
 };
 
